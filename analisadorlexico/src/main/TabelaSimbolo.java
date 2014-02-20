@@ -12,4 +12,23 @@ package main;
  */
 public class TabelaSimbolo {
     
+    private String definicao;
+    private String token;
+
+    public String getDefinicao() {
+        return definicao;
+    }
+
+    public void setDefinicao(String definicao) {
+        this.definicao = definicao;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
 }
