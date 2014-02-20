@@ -6,7 +6,7 @@ package main;
 
 /**
  *
- * @author User
+ * @author Claudemir
  */
 public class Lexer {
     
