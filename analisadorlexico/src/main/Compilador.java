@@ -6,6 +6,8 @@
 
 package main;
 
+import java.io.IOException;
+
 /**
  *
  * @author Claudemir
@@ -13,8 +15,9 @@ package main;
 public class Compilador {
     
     
-    public static void main(String[] args){
-        
+    public static void main(String[] args) throws IOException{
+        Arquivo arq = new Arquivo("teste.txt");
+        arq.parseArquivo();
     }
     
 }
