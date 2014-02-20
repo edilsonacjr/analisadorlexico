@@ -3,6 +3,7 @@ package main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * 
@@ -27,14 +28,14 @@ public class Arquivo {
      * @return
      * @throws IOException 
      */
-    public String parseArquivo() throws IOException {
+    public ArrayList<String> parseArquivo() throws IOException {
         String linha;
-        String arquivo = "";
+        ArrayList<String> matriz = new ArrayList<String>();
         while ((linha = leitor.readLine()) != null) {
-            arquivo += (" "+linha);
+            matriz.add(linha);
         }
         reader.close();
         leitor.close();
-        return arquivo;
+        return matriz;
     }
 }

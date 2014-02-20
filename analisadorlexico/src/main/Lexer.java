@@ -4,43 +4,57 @@
  */
 package main;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Claudemir
  */
 public class Lexer {
+
     private int tam;
-    private String arquivo;
+    private ArrayList<String> arquivo;
     private int pos;
     private String token;
-    
-    public Lexer(String arquivo){
+    private boolean erro;
+
+    public Lexer(ArrayList<String> arquivo) {
         this.arquivo = arquivo;
-        tam = arquivo.length();
+        tam = arquivo.size();
         pos = 0;
     }
-    
-    public void parse(){
+
+    public void parse() {
         String lexema = "";
         boolean fechaLexema = false;
-        
-        
-        while(pos < tam){
-            lexema += arquivo.charAt(pos);
-            fechaLexema = testa(lexema);
-            if(!fechaLexema){
-                pos--;
-                //coloca na tabela
-                System.out.println("<"+token+","+12+">");
-                lexema = "";
+
+        for (int i = 0; i < tam; i++) {
+            int tamLinha = arquivo.get(i).length();
+            while (pos < tamLinha) {
+                lexema += arquivo.get(i).charAt(pos);
+                fechaLexema = testa(lexema);
+                if (!fechaLexema) {
+                    pos = (pos == 0) ? 0 : pos - 1;
+                    
+                    if(erro){
+                        
+                    }else{
+                        //coloca na tabela
+                        System.out.println("<" + token + "," + 12 + ">");
+                    }
+                    
+                    lexema = "";
+                }
+                pos++;
             }
-            pos++;            
+            pos = 0;
         }
+
+
     }
-    
-    public boolean testa(String lexema){
-     
+
+    public boolean testa(String lexema) {
+
         return true;
     }
-    
 }
