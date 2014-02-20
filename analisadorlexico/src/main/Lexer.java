@@ -37,7 +37,7 @@ public class Lexer {
                     pos = (pos == 0) ? 0 : pos - 1;
                     
                     if(erro){
-                        
+                      //teste  
                     }else{
                         //coloca na tabela
                         System.out.println("<" + token + "," + 12 + ">");
