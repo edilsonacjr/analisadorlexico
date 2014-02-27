@@ -125,9 +125,9 @@ public class Lexer {
         if (comentarioMultiplo(lexema)) {
             return true;
         }
-        if (ehDigit(lexema)) {
-            return true;
-        }
+        //if (ehDigit(lexema)) {
+         //   return true;
+        //}
         if (ehFloat(lexema)) {
             return true;
         }
@@ -455,7 +455,6 @@ public class Lexer {
     }
 
     public Boolean ehFloat(String palavra) {
-
         String estado = "q0";
         char caracter = ' ';
         int t = palavra.length();
@@ -463,9 +462,9 @@ public class Lexer {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-
+            System.out.println(caracter);
             if (Character.isDigit(caracter) || caracter == '.') {
-
+                
                 if (Character.isDigit(caracter)) {
                     switch (estado) {
                         case "q0":
@@ -495,10 +494,11 @@ public class Lexer {
             } else {
                 estado = "qerror";
             }
+            System.out.println(estado);
             p++;
         }
 
-        if (estado.equals("q3")) {
+        if (estado.equals("q3") || estado.equals("q2")) {
             token = "FLOAT";
             return true;
         } else {
