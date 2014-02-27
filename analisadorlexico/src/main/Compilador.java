@@ -16,8 +16,12 @@ public class Compilador {
     
     
     public static void main(String[] args) throws IOException{
+        System.out.println("Executando Analisador Léxico\n");
+        
         Arquivo arq = new Arquivo("teste.txt");
-        arq.parseArquivo();
+        //arq.parseArquivo();
+        Lexer lex = new Lexer(arq.parseArquivo());
+        lex.parse();
         //boolean i = "\n".equals("\n");
         //System.out.println(i);
     }   

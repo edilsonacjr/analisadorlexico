@@ -1,10 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -25,35 +22,56 @@ public class Lexer {
         this.arquivo = arquivo;
         tam = arquivo.size();
         pos = 0;
+        tabela = new HashMap<String, TabelaSimbolo>();
+        token = "";
     }
 
     public void parse() {
         int endereco = 0;
         String lexema = "";
-        boolean fechaLexema = false;
+        //boolean fechaLexema = false;
 
+        //Percorre o ArrayList onde estão as linhas do arquivo.
         for (int i = 0; i < tam; i++) {
+            //Define o número de caracteres na linha
             int tamLinha = arquivo.get(i).length();
-            while (pos < tamLinha) {
-                lexema += arquivo.get(i).charAt(pos);
+            //Testa se a linha está fazia
+            if (tamLinha == 0) {
+                continue;
+            }
+            //Percorre cada caracter de uma determinada linha
+            while (pos <= tamLinha) {
+                if (pos == tamLinha) {
+                    lexema += " ";
+                } else {
+                    //Adiciona mais um caracter ao lexema
+                    lexema += arquivo.get(i).charAt(pos);
+                }
+                //Testa se o lexema ainda casa com algum padrão
                 erro = testa(lexema);
-                if (!fechaLexema) {
+                
+                if (!erro) {
+                    //Evita a variável receber um número negativo
                     pos = (pos == 0) ? 0 : pos - 1;
-
+                    
+                    
                     if (erro) {
                         erro = testa(lexema);
                     } else {
                         //coloca na tabela
-                        if(lexema.charAt(-1) == ' ')
-                            pos++;
-                        lexema = lexema.substring(0, lexema.length() - 2);
+                        //if (lexema.charAt(lexema.length() - 1) == ' ') {
+                        //    pos++;
+                        //}
+                        //if (lexema.length() != 1) {
+                        //    lexema = lexema.substring(-1);
+                        //}
                         if (!tabela.containsKey(lexema)) {
                             if (token != "erro") {
                                 TabelaSimbolo t = new TabelaSimbolo();
                                 t.setDefinicao(lexema);
                                 t.setToken(token);
                                 t.setEndereco(endereco);
-                                
+
                                 tabela.put(lexema, t);
                                 System.out.println("<" + token + "," + endereco + ">");
                                 endereco++;
@@ -74,24 +92,26 @@ public class Lexer {
             pos = 0;
         }
 
-
+        System.out.println("Dump da Tabela de Simbolos\n");
+        dumpTabela();
     }
 
     public boolean testa(String lexema) {
-
-        return true;
+        if (comparacao(lexema)) {
+            return true;
+        }
+        return false;
     }
-    
-    public void dumpTabela(){
+
+    public void dumpTabela() {
         Iterator<TabelaSimbolo> i = tabela.values().iterator();
-        while(i.hasNext()){
+        while (i.hasNext()) {
             System.out.println(i.next().toString());
         }
     }
-    
+
     //Insira as funções aqui.
-    
-    public static boolean comparacao(String lexema) {
+    public boolean comparacao(String lexema) {
         String estado = "q0";
         char caracter = ' ';
         int tam = lexema.length();
@@ -138,18 +158,18 @@ public class Lexer {
         if ((estado.equals("q0")) || (estado.equals("qErr"))) {
             return false;
         } else {
-            switch(estado){
+            switch (estado) {
                 case "q1":
-                    //token = GT;
+                    this.token = "GT";
                     break;
                 case "q2":
-                    //token = GE;
+                    token = "GE";
                     break;
                 case "q3":
-                    //token = LT;
+                    token = "LT";
                     break;
                 case "q4":
-                    //token = LE;
+                    token = "LE";
                     break;
             }
             return true;
@@ -186,7 +206,7 @@ public class Lexer {
         if ((estado.equals("q0")) || (estado.equals("qErr"))) {
             return false;
         } else {
-            switch(estado){
+            switch (estado) {
                 case "q1":
                     //token = ATR;
                     break;
@@ -198,7 +218,7 @@ public class Lexer {
         }
 
     }
-    
+
     public static Boolean operador(String palavra) {
 
         String estado = "q0";
@@ -309,7 +329,7 @@ public class Lexer {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-            
+
             if (caracter == '/' || caracter == '*') {
 
                 if (caracter == '/') {
