@@ -88,4 +88,6 @@ public class Lexer {
             System.out.println(i.next().toString());
         }
     }
+    
+    //Coloquem suas funções aqui.
 }
