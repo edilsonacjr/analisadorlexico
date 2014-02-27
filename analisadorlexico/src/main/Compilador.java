@@ -21,6 +21,113 @@ public class Compilador {
         //boolean i = "\n".equals("\n");
         //System.out.println(i);
     }
+    public static boolean comparacao(String lexema) {
+        String estado = "q0";
+        char caracter = ' ';
+        int tam = lexema.length();
+        int i = 0;
+        while (i < tam) {
+            caracter = lexema.charAt(i);
+            if (caracter == ' ') {
+                estado = "qErr";
+            } else if (caracter == '>') {
+                switch (estado) {
+                    case "q0":
+                        estado = "q1";
+                        break;
+                    default:
+                        estado = "qErr";
+                        break;
+                }
+            } else if (caracter == '=') {
+                switch (estado) {
+                    case "q1":
+                        estado = "q2";
+                        break;
+                    case "q3":
+                        estado = "q4";
+                        break;
+                    default:
+                        estado = "qErr";
+                        break;
+                }
+            } else if (caracter == '<') {
+                switch (estado) {
+                    case "q0":
+                        estado = "q3";
+                        break;
+                    default:
+                        estado = "qErr";
+                        break;
+                }
+            } else {
+                estado = "qErr";
+            }
+            i++;
+        }
+        if ((estado.equals("q0")) || (estado.equals("qErr"))) {
+            return false;
+        } else {
+            switch(estado){
+                case "q1":
+                    //token = GT;
+                    break;
+                case "q2":
+                    //token = GE;
+                    break;
+                case "q3":
+                    //token = LT;
+                    break;
+                case "q4":
+                    //token = LE;
+                    break;
+            }
+            return true;
+        }
+
+    }
+
+    public static boolean operadorIgual(String lexema) {
+        String estado = "q0";
+        char caracter = ' ';
+        int tam = lexema.length();
+        int i = 0;
+        while (i < tam) {
+            caracter = lexema.charAt(i);
+            if (caracter == ' ') {
+                estado = "qErr";
+            } else if (caracter == '=') {
+                switch (estado) {
+                    case "q0":
+                        estado = "q1";
+                        break;
+                    case "q1":
+                        estado = "q2";
+                        break;
+                    default:
+                        estado = "qErr";
+                        break;
+                }
+            } else {
+                estado = "qErr";
+            }
+            i++;
+        }
+        if ((estado.equals("q0")) || (estado.equals("qErr"))) {
+            return false;
+        } else {
+            switch(estado){
+                case "q1":
+                    //token = ATR;
+                    break;
+                case "q2":
+                    //token = EQ;
+                    break;
+            }
+            return true;
+        }
+
+    }
     
     public static Boolean operador(String palavra) {
 
