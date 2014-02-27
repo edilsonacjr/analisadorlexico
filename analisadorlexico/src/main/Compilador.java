@@ -138,47 +138,48 @@ public class Compilador {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-            
-            if (caracter != '+' && caracter != '/' && caracter != '*' ){
+
+            if (caracter != '+' && caracter != '/' && caracter != '*') {
                 estado = "qerror";
-            }
+            } else {
 
-            if (caracter == '+') {
-                switch (estado) {
-                    case "q0":
-                        estado = "q1";
-                        break;
-                    case "q1":
-                        estado = "q2";
-                        break;
-                    case "q2":
-                        estado = "qerror";
-                        break;
+                if (caracter == '+') {
+                    switch (estado) {
+                        case "q0":
+                            estado = "q1";
+                            break;
+                        case "q1":
+                            estado = "q2";
+                            break;
+                        case "q2":
+                            estado = "qerror";
+                            break;
+                    }
                 }
-            }
 
-            if (caracter == '/') {
-                switch (estado) {
-                    case "q0":
-                        estado = "q1";
-                        break;
-                    case "q1":
-                        estado = "qerror";
-                        break;
+                if (caracter == '/') {
+                    switch (estado) {
+                        case "q0":
+                            estado = "q1";
+                            break;
+                        case "q1":
+                            estado = "qerror";
+                            break;
+                    }
                 }
-            }
 
-            if (caracter == '*') {
-                switch (estado) {
-                    case "q0":
-                        estado = "q1";
-                        break;
-                    case "q1":
-                        estado = "q2";
-                        break;
-                    case "q2":
-                        estado = "qerror";
-                        break;
+                if (caracter == '*') {
+                    switch (estado) {
+                        case "q0":
+                            estado = "q1";
+                            break;
+                        case "q1":
+                            estado = "q2";
+                            break;
+                        case "q2":
+                            estado = "qerror";
+                            break;
+                    }
                 }
             }
             p++;
@@ -201,32 +202,19 @@ public class Compilador {
         while (p < t) {
             caracter = palavra.charAt(p);
 
-            if (caracter == '/') {
-                switch (estado) {
-                    case "q0":
-                        estado = "q1";
-                        break;
-                    case "q1":
-                        estado = "q2";
-                        break;
-                }
-            }
-
             if (caracter != '\n') {
-                switch (estado) {
-                    case "q0":
-                        estado = "q0";
-                        break;
-                    case "q1":
-                        estado = "q1";
-                        break;
-                    case "q2":
-                        estado = "q2";
-                        break;
-                }
-            }
 
-            if (caracter == '\n') {
+                if (caracter == '/') {
+                    switch (estado) {
+                        case "q0":
+                            estado = "q1";
+                            break;
+                        case "q1":
+                            estado = "q2";
+                            break;
+                    }
+                }
+            } else {
                 switch (estado) {
                     case "q2":
                         estado = "q3";
@@ -251,38 +239,32 @@ public class Compilador {
 
         while (p < t) {
             caracter = palavra.charAt(p);
+            
+            if (caracter == '/' || caracter == '*') {
 
-            if (caracter == '/') {
-                switch (estado) {
-                    case "q0":
-                        estado = "q1";
-                        break;
-                    case "q3":
-                        estado = "q4";
-                        break;
+                if (caracter == '/') {
+                    switch (estado) {
+                        case "q0":
+                            estado = "q1";
+                            break;
+                        case "q3":
+                            estado = "q4";
+                            break;
+                    }
+                }
+
+                if (caracter == '*') {
+
+                    switch (estado) {
+                        case "q1":
+                            estado = "q2";
+                            break;
+                        case "q2":
+                            estado = "q3";
+                            break;
+                    }
                 }
             }
-
-            if (caracter == '*') {
-
-                switch (estado) {
-                    case "q1":
-                        estado = "q2";
-                        break;
-                    case "q2":
-                        estado = "q3";
-                        break;
-                }
-            }
-
-            if (caracter != '/' && caracter != '*') {
-                switch (estado) {
-                    case "q2":
-                        estado = "q2";
-                        break;
-                }
-            }
-
             p++;
         }
         if (estado.equals("q4")) {
@@ -301,8 +283,8 @@ public class Compilador {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-
             if (Character.isDigit(caracter)) {
+
                 switch (estado) {
                     case "q0":
                         estado = "q1";
@@ -311,16 +293,10 @@ public class Compilador {
                         estado = "q1";
                         break;
                 }
-            }
 
-            if (!Character.isDigit(caracter)) {
+            } else {
                 estado = "qerror";
             }
-
-            if (caracter == ' ') {
-                estado = "qerror";
-            }
-
             p++;
         }
         if (estado.equals("q1")) {
@@ -340,43 +316,40 @@ public class Compilador {
         while (p < t) {
             caracter = palavra.charAt(p);
 
-            if (Character.isDigit(caracter)) {
-                switch (estado) {
-                    case "q0":
-                        estado = "q1";
-                        break;
-                    case "q1":
-                        estado = "q1";
-                        break;
-                    case "q2":
-                        estado = "q3";
-                        break;
-                    case "q3":
-                        estado = "q3";
-                        break;
+            if (Character.isDigit(caracter) || caracter == '.') {
+
+                if (Character.isDigit(caracter)) {
+                    switch (estado) {
+                        case "q0":
+                            estado = "q1";
+                            break;
+                        case "q1":
+                            estado = "q1";
+                            break;
+                        case "q2":
+                            estado = "q3";
+                            break;
+                        case "q3":
+                            estado = "q3";
+                            break;
+                    }
+                } else {
+                    switch (estado) {
+                        case "q1":
+                            estado = "q2";
+                            break;
+                        case "q2":
+                            estado = "qerror";
+                            break;
+
+                    }
                 }
-            }
-
-            if (caracter == '.') {
-                switch (estado) {
-                    case "q1":
-                        estado = "q2";
-                        break;
-                    case "q2":
-                        estado = "qerror";
-                        break;
-                }
-            }
-
-            if (!Character.isDigit(caracter) && caracter != '.') {
-                estado = "qerror";
-            }
-
-            if (caracter == ' ') {
+            } else {
                 estado = "qerror";
             }
             p++;
         }
+
         if (estado.equals("q3")) {
             return true;
         } else {
