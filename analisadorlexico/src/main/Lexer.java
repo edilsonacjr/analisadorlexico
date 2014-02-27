@@ -113,22 +113,22 @@ public class Lexer {
         if (comparacao(lexema)) {
             return true;
         }
-        if (comparacao(lexema)) {
+        if (operadorIgual(lexema)) {
             return true;
         }
-        if (comparacao(lexema)) {
+        if (operador(lexema)) {
             return true;
         }
-        if (comparacao(lexema)) {
+        if (comentarioLinha(lexema)) {
             return true;
         }
-        if (comparacao(lexema)) {
+        if (comentarioMultiplo(lexema)) {
             return true;
         }
-        if (comparacao(lexema)) {
+        if (ehDigit(lexema)) {
             return true;
         }
-        if (comparacao(lexema)) {
+        if (ehFloat(lexema)) {
             return true;
         }
         return false;
@@ -210,7 +210,7 @@ public class Lexer {
 
     }
 
-    public static boolean operadorIgual(String lexema) {
+    public boolean operadorIgual(String lexema) {
         String estado = "q0";
         char caracter = ' ';
         int tam = lexema.length();
@@ -241,10 +241,10 @@ public class Lexer {
         } else {
             switch (estado) {
                 case "q1":
-                    //token = ATR;
+                    token = "ATR";
                     break;
                 case "q2":
-                    //token = EQ;
+                    token = "EQ";
                     break;
             }
             return true;
@@ -252,7 +252,7 @@ public class Lexer {
 
     }
 
-    public static Boolean operador(String palavra) {
+    public Boolean operador(String palavra) {
 
         String estado = "q0";
         char caracter = ' ';
@@ -283,7 +283,7 @@ public class Lexer {
                 if (caracter == '/') {
                     switch (estado) {
                         case "q0":
-                            estado = "q1";
+                            estado = "q3";
                             break;
                         case "q1":
                             estado = "qerror";
@@ -294,12 +294,12 @@ public class Lexer {
                 if (caracter == '*') {
                     switch (estado) {
                         case "q0":
-                            estado = "q1";
+                            estado = "q4";
                             break;
-                        case "q1":
-                            estado = "q2";
+                        case "q4":
+                            estado = "q5";
                             break;
-                        case "q2":
+                        case "q5":
                             estado = "qerror";
                             break;
                     }
@@ -308,14 +308,27 @@ public class Lexer {
             p++;
         }
 
-        if (estado.equals("q1") || estado.equals("q2")) {
-            return true;
-        } else {
-            return false;
+        switch (estado){
+            case "q1":
+                token = "SUM";
+                return true;
+            case "q2":
+                token = "INC";
+                return true;
+            case "q3":
+                token = "DIV";
+                return true;
+            case "q4":
+                token = "MUL";
+                return true;
+            case "q5": 
+                token = "POW";
+                return true;
         }
+        return false;
     }
 
-    public static Boolean comentarioLinha(String palavra) {
+    public Boolean comentarioLinha(String palavra) {
 
         String estado = "q0";
         char caracter = ' ';
@@ -347,13 +360,14 @@ public class Lexer {
             p++;
         }
         if (estado == "q3") {
+            token = "COM";
             return true;
         } else {
             return false;
         }
     }
 
-    public static Boolean comentarioMultiplo(String palavra) {
+    public Boolean comentarioMultiplo(String palavra) {
 
         String estado = "q0";
         char caracter = ' ';
@@ -391,13 +405,14 @@ public class Lexer {
             p++;
         }
         if (estado.equals("q4")) {
+            token = "COM";
             return true;
         } else {
             return false;
         }
     }
 
-    public static Boolean ehDigit(String palavra) {
+    public Boolean ehDigit(String palavra) {
 
         String estado = "q0";
         char caracter = ' ';
@@ -417,19 +432,29 @@ public class Lexer {
                         break;
                 }
 
-            } else {
-                estado = "qerror";
+            } 
+            
+            if (!Character.isDigit(caracter)){
+                switch (estado) {
+                    case "q0":
+                        estado = "qerror";
+                        break;
+                    case "q1":
+                        estado = "qerror";
+                        break;
+                }
             }
             p++;
         }
         if (estado.equals("q1")) {
+            token = "INT";
             return true;
         } else {
             return false;
         }
     }
 
-    public static Boolean ehFloat(String palavra) {
+    public Boolean ehFloat(String palavra) {
 
         String estado = "q0";
         char caracter = ' ';
@@ -474,6 +499,7 @@ public class Lexer {
         }
 
         if (estado.equals("q3")) {
+            token = "FLOAT";
             return true;
         } else {
             return false;
