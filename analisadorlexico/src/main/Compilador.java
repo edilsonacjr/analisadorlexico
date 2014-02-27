@@ -18,6 +18,8 @@ public class Compilador {
     public static void main(String[] args) throws IOException{
         Arquivo arq = new Arquivo("teste.txt");
         arq.parseArquivo();
+        //boolean i = "\n".equals("\n");
+        //System.out.println(i);
     }
     
 }

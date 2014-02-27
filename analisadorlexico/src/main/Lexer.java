@@ -5,6 +5,8 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -14,6 +16,7 @@ public class Lexer {
 
     private int tam;
     private ArrayList<String> arquivo;
+    private Map<String, TabelaSimbolo> tabela;
     private int pos;
     private String token;
     private boolean erro;
@@ -25,6 +28,7 @@ public class Lexer {
     }
 
     public void parse() {
+        int endereco = 0;
         String lexema = "";
         boolean fechaLexema = false;
 
@@ -32,17 +36,37 @@ public class Lexer {
             int tamLinha = arquivo.get(i).length();
             while (pos < tamLinha) {
                 lexema += arquivo.get(i).charAt(pos);
-                fechaLexema = testa(lexema);
+                erro = testa(lexema);
                 if (!fechaLexema) {
                     pos = (pos == 0) ? 0 : pos - 1;
-                    
-                    if(erro){
-                      //teste  
-                    }else{
+
+                    if (erro) {
+                        erro = testa(lexema);
+                    } else {
                         //coloca na tabela
-                        System.out.println("<" + token + "," + 12 + ">");
+                        if(lexema.charAt(-1) == ' ')
+                            pos++;
+                        lexema = lexema.substring(0, lexema.length() - 2);
+                        if (!tabela.containsKey(lexema)) {
+                            if (token != "erro") {
+                                TabelaSimbolo t = new TabelaSimbolo();
+                                t.setDefinicao(lexema);
+                                t.setToken(token);
+                                t.setEndereco(endereco);
+                                
+                                tabela.put(lexema, t);
+                                System.out.println("<" + token + "," + endereco + ">");
+                                endereco++;
+                            } else {
+                                System.out.println("INVALIDO (" + lexema + ") LINHA " + i);
+                            }
+                        } else {
+                            TabelaSimbolo ts = tabela.get(lexema);
+                            System.out.println("<" + token + "," + ts.getEndereco() + ">");
+                        }
+
                     }
-                    
+
                     lexema = "";
                 }
                 pos++;
@@ -56,5 +80,12 @@ public class Lexer {
     public boolean testa(String lexema) {
 
         return true;
+    }
+    
+    public void dumpTabela(){
+        Iterator<TabelaSimbolo> i = tabela.values().iterator();
+        while(i.hasNext()){
+            System.out.println(i.next().toString());
+        }
     }
 }
