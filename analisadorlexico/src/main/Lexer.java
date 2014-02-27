@@ -25,7 +25,9 @@ public class Lexer {
         tabela = new HashMap<String, TabelaSimbolo>();
         token = "";
     }
-
+    /**
+     * Função responsável por fazer a análise léxica do arquivo
+     */
     public void parse() {
         int endereco = 0;
         String lexema = "";
@@ -47,14 +49,19 @@ public class Lexer {
                     //Adiciona mais um caracter ao lexema
                     lexema += arquivo.get(i).charAt(pos);
                 }
+                if(lexema.equals(" ")||lexema.equals("\b")||lexema.equals("\t")){
+                    pos++;
+                    lexema="";
+                    continue;
+                }
                 //Testa se o lexema ainda casa com algum padrão
                 erro = testa(lexema);
-                
+
                 if (!erro) {
                     //Evita a variável receber um número negativo
-                    pos = (pos == 0) ? 0 : pos - 1;
-                    
-                    
+                    //pos = (pos == 0) ? 0 : pos - 1;
+
+
                     if (erro) {
                         erro = testa(lexema);
                     } else {
@@ -65,7 +72,10 @@ public class Lexer {
                         //if (lexema.length() != 1) {
                         //    lexema = lexema.substring(-1);
                         //}
+                        lexema = lexema.trim();
+                        //Verifica se o lexema já esta na tabela de simbolos
                         if (!tabela.containsKey(lexema)) {
+                            //Verifica se o estado é de erro
                             if (token != "erro") {
                                 TabelaSimbolo t = new TabelaSimbolo();
                                 t.setDefinicao(lexema);
@@ -82,9 +92,7 @@ public class Lexer {
                             TabelaSimbolo ts = tabela.get(lexema);
                             System.out.println("<" + token + "," + ts.getEndereco() + ">");
                         }
-
                     }
-
                     lexema = "";
                 }
                 pos++;
@@ -92,17 +100,42 @@ public class Lexer {
             pos = 0;
         }
 
-        System.out.println("Dump da Tabela de Simbolos\n");
+        System.out.println("\nDump da Tabela de Simbolos");
         dumpTabela();
     }
-
+    
+    /**
+     * Função responsável por verifcar se existe algum casamento de padrão
+     * @param lexema: lexema a ser testado
+     * @return true casar, e falso caso contrário
+     */
     public boolean testa(String lexema) {
+        if (comparacao(lexema)) {
+            return true;
+        }
+        if (comparacao(lexema)) {
+            return true;
+        }
+        if (comparacao(lexema)) {
+            return true;
+        }
+        if (comparacao(lexema)) {
+            return true;
+        }
+        if (comparacao(lexema)) {
+            return true;
+        }
+        if (comparacao(lexema)) {
+            return true;
+        }
         if (comparacao(lexema)) {
             return true;
         }
         return false;
     }
-
+    /**
+     * Função responsável por fazer o dump da tabela de simbolo
+     */
     public void dumpTabela() {
         Iterator<TabelaSimbolo> i = tabela.values().iterator();
         while (i.hasNext()) {
@@ -160,7 +193,7 @@ public class Lexer {
         } else {
             switch (estado) {
                 case "q1":
-                    this.token = "GT";
+                    token = "GT";
                     break;
                 case "q2":
                     token = "GE";
