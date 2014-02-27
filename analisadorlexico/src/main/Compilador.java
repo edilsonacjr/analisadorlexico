@@ -31,16 +31,9 @@ public class Compilador {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-            if (caracter == ' ' || Character.isDigit(caracter)) {
+            
+            if (caracter != '+' && caracter != '/' && caracter != '*' ){
                 estado = "qerror";
-            }
-
-            if (!Character.isDigit(caracter)) {
-                
-                if (caracter != '+' && caracter != '/' && caracter != '*' ){
-                    estado = "qerror";
-                }
-                
             }
 
             if (caracter == '+') {
