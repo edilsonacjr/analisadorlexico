@@ -1,4 +1,4 @@
-analisadorlexico
+gestor
 ================
 
-Implementação de um analisador léxico em Java.
+Implementação de um gestor financeiro em Java.
