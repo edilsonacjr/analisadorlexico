@@ -412,7 +412,7 @@ public class Lexer {
         }
     }
 
-    public Boolean ehDigit(String palavra) {
+     public static Boolean ehDigit(String palavra) {
 
         String estado = "q0";
         char caracter = ' ';
@@ -421,50 +421,8 @@ public class Lexer {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-            if (Character.isDigit(caracter)) {
-
-                switch (estado) {
-                    case "q0":
-                        estado = "q1";
-                        break;
-                    case "q1":
-                        estado = "q1";
-                        break;
-                }
-
-            } 
-            
-            if (!Character.isDigit(caracter)){
-                switch (estado) {
-                    case "q0":
-                        estado = "qerror";
-                        break;
-                    case "q1":
-                        estado = "qerror";
-                        break;
-                }
-            }
-            p++;
-        }
-        if (estado.equals("q1")) {
-            token = "INT";
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public Boolean ehFloat(String palavra) {
-        String estado = "q0";
-        char caracter = ' ';
-        int t = palavra.length();
-        int p = 0;
-
-        while (p < t) {
-            caracter = palavra.charAt(p);
-            System.out.println(caracter);
             if (Character.isDigit(caracter) || caracter == '.') {
-                
+
                 if (Character.isDigit(caracter)) {
                     switch (estado) {
                         case "q0":
@@ -473,36 +431,25 @@ public class Lexer {
                         case "q1":
                             estado = "q1";
                             break;
-                        case "q2":
-                            estado = "q3";
-                            break;
-                        case "q3":
-                            estado = "q3";
-                            break;
                     }
                 } else {
-                    switch (estado) {
-                        case "q1":
-                            estado = "q2";
-                            break;
-                        case "q2":
-                            estado = "qerror";
-                            break;
-
-                    }
+                    estado = "q2";
                 }
+
             } else {
                 estado = "qerror";
             }
-            System.out.println(estado);
             p++;
         }
-
-        if (estado.equals("q3") || estado.equals("q2")) {
-            token = "FLOAT";
-            return true;
-        } else {
-            return false;
+        switch (estado) {
+            case "q1":
+                token = "INT";
+                return true;
+            case "q2":
+                token = "FLOAT";
+                return true;
+            default:
+                return false;
         }
     }
 }
