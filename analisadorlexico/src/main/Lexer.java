@@ -488,7 +488,7 @@ public class Lexer {
                 }
 
             } else {
-                //Caso não se encontre um digito ou um ponto vai-se para estado de erro
+                //Caso não seja digito ou ponto vai-se para estado de erro
                 estado = "qerror";
             }
             p++;
