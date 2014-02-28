@@ -403,7 +403,7 @@ public class Lexer {
         while (p < t) {
             caracter = palavra.charAt(p);
             
-            //Se o comentário é / ou * que são importantes pra mim
+            //Se caracter é / ou * que são importantes para comentário multiplo então...
             if (caracter == '/' || caracter == '*') {
                 
                 //Se o caracter é igual a /
