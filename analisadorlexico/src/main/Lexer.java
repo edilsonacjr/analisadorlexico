@@ -266,7 +266,8 @@ public class Lexer {
             if (caracter != '+' && caracter != '/' && caracter != '*') {
                 estado = "qerror";
             } else {
-                //Se o caracter é algum dos que me interessam a avaliação sera feita
+                //O caracter é algum dos que deve ser tratados
+                
                 //Se caracter for igual a +
                 if (caracter == '+') {
                     switch (estado) {
@@ -291,7 +292,7 @@ public class Lexer {
                             //Estando-se em q0 vai se para q3 que é estado final de divisão
                             estado = "q3";
                             break;
-                        case "q1":
+                        case "q3":
                             //Caso outra barra seja encontrado vai-se para estado de erro
                             estado = "qerror";
                             break;
@@ -309,7 +310,7 @@ public class Lexer {
                             estado = "q5";
                             break;
                         case "q5":
-                            //Caso encontre outro sinal de * vai se para estado de erro.
+                            //Estando em q5 caso encontre outro sinal de * vai se para estado de erro.
                             estado = "qerror";
                             break;
                     }
