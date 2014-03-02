@@ -25,6 +25,7 @@ public class Lexer {
         tabela = new HashMap<String, TabelaSimbolo>();
         token = "";
     }
+
     /**
      * Função responsável por fazer a análise léxica do arquivo
      */
@@ -49,9 +50,9 @@ public class Lexer {
                     //Adiciona mais um caracter ao lexema
                     lexema += arquivo.get(i).charAt(pos);
                 }
-                if(lexema.equals(" ")||lexema.equals("\b")||lexema.equals("\t")){
+                if (lexema.equals(" ") || lexema.equals("\b") || lexema.equals("\t")) {
                     pos++;
-                    lexema="";
+                    lexema = "";
                     continue;
                 }
                 //Testa se o lexema ainda casa com algum padrão
@@ -103,9 +104,10 @@ public class Lexer {
         System.out.println("\nDump da Tabela de Simbolos");
         dumpTabela();
     }
-    
+
     /**
      * Função responsável por verifcar se existe algum casamento de padrão
+     *
      * @param lexema: lexema a ser testado
      * @return true casar, e falso caso contrário
      */
@@ -125,14 +127,15 @@ public class Lexer {
         if (comentarioMultiplo(lexema)) {
             return true;
         }
-        //if (ehDigit(lexema)) {
-         //   return true;
-        //}
-        if (ehFloat(lexema)) {
+        if (ehDigit(lexema)) {
             return true;
         }
+        //if (invalido(lexema)) {
+        //    return true;
+        //}
         return false;
     }
+
     /**
      * Função responsável por fazer o dump da tabela de simbolo
      */
@@ -261,13 +264,13 @@ public class Lexer {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-            
+
             //Se o caracter não é nenhum dos caracteres que me interessam estado de erro encontrado
             if (caracter != '+' && caracter != '/' && caracter != '*') {
                 estado = "qerror";
             } else {
                 //O caracter é algum dos que deve ser tratados
-                
+
                 //Se caracter for igual a +
                 if (caracter == '+') {
                     switch (estado) {
@@ -319,7 +322,7 @@ public class Lexer {
             p++;
         }
 
-        switch (estado){
+        switch (estado) {
             case "q1":
                 //token recebe SUM retorna true
                 token = "SUM";
@@ -336,7 +339,7 @@ public class Lexer {
                 //token recebe MUL retorna true
                 token = "MUL";
                 return true;
-            case "q5": 
+            case "q5":
                 //token recebe POW retorna true
                 token = "POW";
                 return true;
@@ -354,10 +357,10 @@ public class Lexer {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-            
+
             //Se caracter diferente de quebra de linha
             if (caracter != '\n') {
-                
+
                 //Se o caracter for /
                 if (caracter == '/') {
                     switch (estado) {
@@ -402,10 +405,10 @@ public class Lexer {
 
         while (p < t) {
             caracter = palavra.charAt(p);
-            
+
             //Se caracter é / ou * que são importantes para comentário multiplo então...
             if (caracter == '/' || caracter == '*') {
-                
+
                 //Se o caracter é igual a /
                 if (caracter == '/') {
                     switch (estado) {
@@ -449,7 +452,7 @@ public class Lexer {
     }
 
     //Comentário ehDigit verifica também se é float
-    public static Boolean ehDigit(String palavra) {
+    public Boolean ehDigit(String palavra) {
 
         String estado = "q0";
         char caracter = ' ';
@@ -460,7 +463,7 @@ public class Lexer {
             caracter = palavra.charAt(p);
             //Se o caracter é um digito ou um ponto o que interessa para analise
             if (Character.isDigit(caracter) || caracter == '.') {
-                
+
                 //Se o caracter e um digito
                 if (Character.isDigit(caracter)) {
                     switch (estado) {
@@ -474,7 +477,7 @@ public class Lexer {
                             break;
                         case "q2":
                             //Estando em q2 permanece-se em q2 pois podem haver mais digitos apos o ponto
-                            estado = "q2"
+                            estado = "q2";
                             break;
                     }
                 } else {
@@ -504,6 +507,14 @@ public class Lexer {
                 return true;
         }
         //Retorna false caso nao case padrões
+        return false;
+    }
+
+    public Boolean invalido(String lexema) {
+        if (lexema.charAt(lexema.length() - 1) == ' ') {
+            token = "erro";
+            return true;
+        }
         return false;
     }
 }
