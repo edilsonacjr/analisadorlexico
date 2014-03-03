@@ -49,6 +49,7 @@ public class Lexer {
                 } else {
                     //Adiciona mais um caracter ao lexema
                     lexema += arquivo.get(i).charAt(pos);
+                    System.out.println(lexema);
                 }
                 if (lexema.equals(" ") || lexema.equals("\b") || lexema.equals("\t")) {
                     pos++;
@@ -61,7 +62,6 @@ public class Lexer {
                 if (!erro) {
                     //Evita a variável receber um número negativo
                     //pos = (pos == 0) ? 0 : pos - 1;
-
 
                     if (erro) {
                         erro = testa(lexema);
@@ -265,60 +265,48 @@ public class Lexer {
         while (p < t) {
             caracter = palavra.charAt(p);
 
-            //Se o caracter não é nenhum dos caracteres que me interessam estado de erro encontrado
-            if (caracter != '+' && caracter != '/' && caracter != '*') {
-                estado = "qerror";
-            } else {
-                //O caracter é algum dos que deve ser tratados
-
-                //Se caracter for igual a +
-                if (caracter == '+') {
+            switch (caracter) {
+                case '+':
                     switch (estado) {
                         case "q0":
-                            //Estando em q0 vai-se para q1 que estado final para adição
                             estado = "q1";
                             break;
                         case "q1":
-                            //Encontrando-se outro sinal de + em q1 vai-se para q2 que é estado final para incremento
                             estado = "q2";
                             break;
                         case "q2":
-                            //Caso outro sinal de adição seja encontrado vai-se para estado de erro
                             estado = "qerror";
                             break;
                     }
-                }
-                //Se caracter e igual a /
-                if (caracter == '/') {
+                    break;
+                case '/':
                     switch (estado) {
                         case "q0":
-                            //Estando-se em q0 vai se para q3 que é estado final de divisão
                             estado = "q3";
                             break;
                         case "q3":
-                            //Caso outra barra seja encontrado vai-se para estado de erro
                             estado = "qerror";
                             break;
                     }
-                }
-                //Se caracter igual a *
-                if (caracter == '*') {
+                    break;
+                case '*':
                     switch (estado) {
                         case "q0":
-                            //Estando em q0 que é estado incial vai se para q4 que é estado final de  multiplicação
                             estado = "q4";
                             break;
                         case "q4":
-                            //Encontrando se outro sinal de * em q4 vai se para q5 que estado final de exponenciação
                             estado = "q5";
                             break;
                         case "q5":
-                            //Estando em q5 caso encontre outro sinal de * vai se para estado de erro.
                             estado = "qerror";
                             break;
                     }
-                }
+                    break;
+                default:
+                    estado = "qerror";
+                    break;
             }
+
             p++;
         }
 
@@ -345,6 +333,7 @@ public class Lexer {
                 return true;
         }
         //Retorna false por não ter casado nenhum padrão.
+
         return false;
     }
 
@@ -358,31 +347,33 @@ public class Lexer {
         while (p < t) {
             caracter = palavra.charAt(p);
 
-            //Se caracter diferente de quebra de linha
-            if (caracter != '\n') {
-
-                //Se o caracter for /
-                if (caracter == '/') {
+            switch (caracter) {
+                case '/':
                     switch (estado) {
                         case "q0":
-                            //Estando em q0 vai se para q1
                             estado = "q1";
                             break;
                         case "q1":
-                            //Estando em q1 vai para q2 e fica aguardando quebra de linha.
                             estado = "q2";
                             break;
                     }
-                }
-            } else {
-                //Se o caracter é quebra de linha
-                switch (estado) {
-                    case "q2":
-                        //Estado recebe q3 que é estado final para quebra de linha
-                        estado = "q3";
-                        break;
-                }
+                    break;
+                case '\n':
+                    switch (estado) {
+                        case "q2":
+                            estado = "q3";
+                            break;
+                    }
+                    break;
+                default:
+                    switch (estado) {
+                        case "q2":
+                            estado = "q2";
+                            break;
+                    }
+                    break;
             }
+
             p++;
         }
         //Se o estado é o estado final q3
@@ -407,36 +398,35 @@ public class Lexer {
             caracter = palavra.charAt(p);
 
             //Se caracter é / ou * que são importantes para comentário multiplo então...
-            if (caracter == '/' || caracter == '*') {
-
-                //Se o caracter é igual a /
-                if (caracter == '/') {
+            switch (caracter) {
+                case '/':
                     switch (estado) {
                         case "q0":
-                            //Estando em q0 vai-se pra q1
                             estado = "q1";
                             break;
                         case "q3":
-                            //Estando em q3 vai se para q4 que é estado final para comentário multiplo.
                             estado = "q4";
                             break;
                     }
-                }
-
-                //Se caracter é igual a *
-                if (caracter == '*') {
-
+                    break;
+                case '*':
                     switch (estado) {
                         case "q1":
-                            //Estando em q1 pois ja encontrou uma / vai-se para q2
                             estado = "q2";
                             break;
                         case "q2":
-                            //Estando em q2 vai-se para q3 e fica aguardando a outra / que fecha o comentário
                             estado = "q3";
                             break;
                     }
-                }
+                    break;
+                default:
+                    switch (estado) {
+                        case "q2":
+                            estado = "q2";
+                            break;
+                    }
+                    break;
+
             }
             p++;
         }
@@ -462,37 +452,34 @@ public class Lexer {
         while (p < t) {
             caracter = palavra.charAt(p);
             //Se o caracter é um digito ou um ponto o que interessa para analise
-            if (Character.isDigit(caracter) || caracter == '.') {
 
-                //Se o caracter e um digito
-                if (Character.isDigit(caracter)) {
-                    switch (estado) {
-                        case "q0":
-                            //Estando em q0 vai-se para q1 
-                            estado = "q1";
-                            break;
-                        case "q1":
-                            //Estando em q1 permance-se em q1 até que um ponto se encontrado
-                            estado = "q1";
-                            break;
-                        case "q2":
-                            //Estando em q2 permanece-se em q2 pois podem haver mais digitos apos o ponto
-                            estado = "q2";
-                            break;
-                    }
-                } else {
-                    //Caso o ponto seja encontrado
-                    switch (estado) {
-                        case "q1":
-                            //Estando em q1 pois ja se encontrou um digito vai-se para q2 que é estado final para float
-                            estado = "q2";
-                            break;
-                    }
+            if (Character.isDigit(caracter)) {
+                switch (estado) {
+                    case "q0":
+                        //Estando em q0 vai-se para q1 
+                        estado = "q1";
+                        break;
+                    case "q1":
+                        //Estando em q1 permance-se em q1 até que um ponto se encontrado
+                        estado = "q1";
+                        break;
+                    case "q2":
+                        //Estando em q2 permanece-se em q2 pois podem haver mais digitos apos o ponto
+                        estado = "q2";
+                        break;
                 }
-
+            } else if (caracter == '.') {
+                //Caso o ponto seja encontrado
+                switch (estado) {
+                    case "q1":
+                        //Estando em q1 pois ja se encontrou um digito vai-se para q2 que é estado final para float
+                        estado = "q2";
+                        break;
+                }
             } else {
                 //Caso não seja digito ou ponto vai-se para estado de erro
                 estado = "qerror";
+
             }
             p++;
         }
