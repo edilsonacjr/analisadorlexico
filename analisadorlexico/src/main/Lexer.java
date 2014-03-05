@@ -77,7 +77,7 @@ public class Lexer {
                         //Verifica se o lexema já esta na tabela de simbolos
                         if (!tabela.containsKey(lexema)) {
                             //Verifica se o estado é de erro
-                            if (token != "erro") {
+                            if (!"erro".equals(token)) {
                                 TabelaSimbolo t = new TabelaSimbolo();
                                 t.setDefinicao(lexema);
                                 t.setToken(token);
