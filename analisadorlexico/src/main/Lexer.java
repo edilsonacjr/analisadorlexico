@@ -127,7 +127,7 @@ public class Lexer {
         if (comentarioMultiplo(lexema)) {
             return true;
         }
-        if (ehDigit(lexema)) {
+        if (numerico(lexema)) {
             return true;
         }
         //if (invalido(lexema)) {
@@ -492,8 +492,8 @@ public class Lexer {
         }
     }
 
-    //Comentário ehDigit verifica também se é float
-    public Boolean ehDigit(String palavra) {
+    //Comentário numerico verifica também se é float
+    public Boolean numerico(String palavra) {
 
         String estado = "q0";
         char caracter = ' ';
