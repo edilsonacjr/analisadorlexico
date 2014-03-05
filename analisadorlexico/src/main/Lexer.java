@@ -114,27 +114,27 @@ public class Lexer {
      * @return true casar, e falso caso contrário
      */
     public boolean testa(String lexema) {
-        //if (comparacao(lexema)) {
-        //    return true;
-       // }
-       // if (operadorIgual(lexema)) {
-       //     return true;
-       // }
-       // if (operador(lexema)) {
-      //      return true;
-      //  }
+        if (comparacao(lexema)) {
+            return true;
+        }
+        if (operadorIgual(lexema)) {
+            return true;
+        }
+        if (operador(lexema)) {
+            return true;
+        }
         if (comentarioLinha(lexema)) {
             return true;
         }
         if (comentarioMultiplo(lexema)) {
             return true;
         }
-        //if (numerico(lexema)) {
-       //     return true;
-      //  }
-        //if (invalido(lexema)) {
-        //    return true;
-        //}
+        if (numerico(lexema)) {
+            return true;
+        }
+        if (invalido(lexema)) {
+            return true;
+        }
         return false;
     }
 
