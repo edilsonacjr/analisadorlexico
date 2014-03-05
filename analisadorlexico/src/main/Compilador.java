@@ -18,7 +18,7 @@ public class Compilador {
     public static void main(String[] args) throws IOException{
         System.out.println("Executando Analisador Léxico");
         
-        Arquivo arq = new Arquivo("teste2.txt");
+        Arquivo arq = new Arquivo("teste.txt");
         Lexer lex = new Lexer(arq.parseArquivo());
         lex.parse();
     }   
