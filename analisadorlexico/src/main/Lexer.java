@@ -147,30 +147,44 @@ public class Lexer {
     }
 
     //Insira as funções aqui.
+    //Função que verifica os seguintes lexemas: ">","<",">=" e "<="
     public boolean comparacao(String lexema) {
+        //Estado atual. O estado q0 é o estado inicial
         String estado = "q0";
         char caracter = ' ';
         int tam = lexema.length();
         int i = 0;
         while (i < tam) {
+            /* Recebe o próximo caracter do lexema, pois a função verifica se 
+             * parte do lexema, ou ele todo, é válido           
+             */
             caracter = lexema.charAt(i);
-            if (caracter == ' ') {
-                estado = "qErr";
-            } else if (caracter == '>') {
+            if (caracter == '>') {
+                //Verfica o estado atual para que sejam feitas as transições de estado 
                 switch (estado) {
                     case "q0":
+                        //Estado q1
                         estado = "q1";
                         break;
                     default:
+                        /* Caso o estado atual seja diferente de algum estado 
+                         * válido para formar um lexema válido ou parte deste, 
+                         * o estado é atualizado para o estado qErr (Estado de Erro),
+                         * mas é preciso ler os outros caracteres do lexema para 
+                         * que seja retornado 'false'
+                         */
                         estado = "qErr";
                         break;
                 }
             } else if (caracter == '=') {
+                //Verfica o estado atual para que sejam feitas as transições de estado 
                 switch (estado) {
                     case "q1":
+                        //Estado q2
                         estado = "q2";
                         break;
                     case "q3":
+                        //Estado q4
                         estado = "q4";
                         break;
                     default:
@@ -178,8 +192,10 @@ public class Lexer {
                         break;
                 }
             } else if (caracter == '<') {
+                //Verfica o estado atual para que sejam feitas as transições de estado 
                 switch (estado) {
                     case "q0":
+                        //Estado q3
                         estado = "q3";
                         break;
                     default:
@@ -187,42 +203,59 @@ public class Lexer {
                         break;
                 }
             } else {
+                /* Se algum caracter lido for diferente de um caracter válido,
+                 * então o lexema é inválido para esta função
+                 */
                 estado = "qErr";
             }
             i++;
         }
+        /* Se todos os caracteres forem lidos, e o estado atual não for um estado
+         * final, entao é retornado 'false'
+         */
         if ((estado.equals("q0")) || (estado.equals("qErr"))) {
             return false;
         } else {
+            //Algum dos estados finais foi alcançado
+            //Associa o estado atual a um token 
             switch (estado) {
                 case "q1":
+                    //Token recebe o valor "GT" representando o lexema ">"
                     token = "GT";
                     break;
                 case "q2":
+                    //Token recebe o valor "GE" representando o lexema ">="
                     token = "GE";
                     break;
                 case "q3":
+                    //Token recebe o valor "LT" representando o lexema "<"
                     token = "LT";
                     break;
                 case "q4":
+                    //Token recebe o valor "GE" representando o lexema "<="
                     token = "LE";
                     break;
             }
+            //Retorna 'true' validando o lexema como válido para esta função
             return true;
         }
 
     }
 
+    //Verifica os seguintes lexemas: "=" e "=="
     public boolean operadorIgual(String lexema) {
+        //Estado atual. O estado q0 é o estado inicial
         String estado = "q0";
         char caracter = ' ';
         int tam = lexema.length();
         int i = 0;
         while (i < tam) {
+            /*Recebe o próximo caracter do lexema, pois a função verifica se 
+             *parte do lexema ou ele todo é válido ou não           
+             */
             caracter = lexema.charAt(i);
-            if (caracter == ' ') {
-                estado = "qErr";
-            } else if (caracter == '=') {
+            if (caracter == '=') {
+                //Verfica o estado atual para que sejam feitas as transições de estado 
                 switch (estado) {
                     case "q0":
                         estado = "q1";
@@ -231,25 +264,42 @@ public class Lexer {
                         estado = "q2";
                         break;
                     default:
+                        /* Caso o estado atual seja diferente de algum estado 
+                         * válido para formar um lexema válido ou parte deste, 
+                         * o estado é atualizado para o estado qErr (Estado de Erro),
+                         * mas é preciso ler os outros caracteres do lexema para 
+                         * que seja retornado 'false'
+                         */
                         estado = "qErr";
                         break;
                 }
             } else {
+                /* Se algum caracter lido for diferente de um caracter válido,
+                 * então o lexema é inválido para esta função
+                 */
                 estado = "qErr";
             }
             i++;
         }
+        /* Se todos os caracteres forem lidos, e o estado atual não for um estado
+         * final, entao é retornado 'false'
+         */
         if ((estado.equals("q0")) || (estado.equals("qErr"))) {
             return false;
         } else {
+            //Algum dos estados finais foi alcançado
+            //Associa o estado atual a um token 
             switch (estado) {
                 case "q1":
+                    //Token recebe o valor "ATR" representando o lexema "="
                     token = "ATR";
                     break;
                 case "q2":
+                    //Token recebe o valor "EQ" representando o lexema "=="
                     token = "EQ";
                     break;
             }
+            //Retorna 'true' validando o lexema como válido para esta função
             return true;
         }
 
@@ -275,6 +325,7 @@ public class Lexer {
                             estado = "q2";
                             break;
                         case "q2":
+
                             estado = "qerror";
                             break;
                     }
