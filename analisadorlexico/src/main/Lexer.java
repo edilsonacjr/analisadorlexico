@@ -304,7 +304,9 @@ public class Lexer {
         }
 
     }
-
+    
+    
+    //Função que verifica os seguintes lexemas '+', '++','/','*','**'
     public Boolean operador(String palavra) {
 
         String estado = "q0";
@@ -313,54 +315,67 @@ public class Lexer {
         int p = 0;
 
         while (p < t) {
+            //Recebe o caracter da posição atual
             caracter = palavra.charAt(p);
-
+            //Verifica o caracter que está sendo passado
             switch (caracter) {
+                //Verificação do caracter "+"
                 case '+':
                     switch (estado) {
                         case "q0":
+                            //Estado recebe q1 encontrando-se "+"
                             estado = "q1";
                             break;
                         case "q1":
+                            //Estado recebe q2 encontrando-se outro "+"
                             estado = "q2";
                             break;
                         case "q2":
-
+                            //Estado de erro caso outro caracter "+" seja encontrado
                             estado = "qerror";
                             break;
                     }
                     break;
+                //Verificação do caracter "/"    
                 case '/':
                     switch (estado) {
                         case "q0":
+                            //Estado recebe q3 
                             estado = "q3";
                             break;
                         case "q3":
+                            //Estado de erro caso outro caracter "/" seja encontrado
                             estado = "qerror";
                             break;
                     }
                     break;
+                //Verificação do caracter "*"    
                 case '*':
                     switch (estado) {
                         case "q0":
+                            //Estado recebe q4
                             estado = "q4";
                             break;
                         case "q4":
+                            //Estado recebe q5 caso outro "*" seja encontrado
                             estado = "q5";
                             break;
                         case "q5":
+                            //Estado de erro caso outro caracter "*" seja encontrado
                             estado = "qerror";
                             break;
                     }
                     break;
+                //Caso caracter não seja nenhum dos caracteres verificados estado de erro encontrado    
                 default:
                     estado = "qerror";
                     break;
             }
-
+            //Incrementa-se posição
             p++;
         }
-
+        
+        //Atribuição dos tokens
         switch (estado) {
             case "q1":
                 //token recebe SUM retorna true
@@ -382,10 +397,10 @@ public class Lexer {
                 //token recebe POW retorna true
                 token = "POW";
                 return true;
+            default 
+                //Retorna false por não ter casado nenhum padrão.
+                return false;
         }
-        //Retorna false por não ter casado nenhum padrão.
-
-        return false;
     }
 
     public Boolean comentarioLinha(String palavra) {
