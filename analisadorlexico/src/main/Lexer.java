@@ -90,7 +90,9 @@ public class Lexer {
             }
             pos = 0;
         }
-
+        if (!lexema.equals("")) {
+            System.out.println("INVALIDO (" + lexema.trim() + ") LINHA " + tam);
+        }
         System.out.println("\nDump da Tabela de Simbolos");
         dumpTabela();
     }
@@ -115,14 +117,14 @@ public class Lexer {
             return true;
         }
         if (comentarioMultiplo(lexema)) {
-           return true;
+            return true;
         }
         if (numerico(lexema)) {
             return true;
         }
-        //if (invalido(lexema)) {
-        //    return true;
-        //}
+        if (invalido(lexema)) {
+            return true;
+        }
         return false;
     }
 
@@ -131,8 +133,17 @@ public class Lexer {
      */
     public void dumpTabela() {
         Iterator<TabelaSimbolo> i = tabela.values().iterator();
-        while (i.hasNext()) {
-            System.out.println(i.next().toString());
+        int t = tabela.size();
+        TabelaSimbolo[] tab = new TabelaSimbolo[t];
+        TabelaSimbolo item = new TabelaSimbolo();
+
+        for (int m = 0; m < t; m++) {
+            item = i.next();
+            tab[item.getEndereco()] = item;
+        }
+
+        for (int m = 0; m < t; m++) {
+            System.out.println(tab[m].toString());
         }
     }
 
@@ -544,10 +555,41 @@ public class Lexer {
     }
 
     public Boolean invalido(String lexema) {
-        if (lexema.charAt(lexema.length() - 1) == ' ') {
-            token = "erro";
-            return true;
+
+        String estado = "q0";
+        char caracter = ' ';
+        int t = lexema.length();
+        int p = 0;
+
+        while (p < t) {
+            caracter = lexema.charAt(p);
+            //Se o caracter é um digito ou um ponto o que interessa para analise
+
+            if (Character.isDigit(caracter) || Character.isAlphabetic(caracter)) {
+                switch (estado) {
+                    case "q0":
+                        //Estando em q0 vai-se para q1 
+                        estado = "q1";
+                        break;
+                    case "q1":
+                        //Estando em q1 permance-se em q1 até que um ponto se encontrado
+                        estado = "q1";
+                        break;
+                }
+            } else if (true) {
+            } else {
+                //Caso não seja digito ou ponto vai-se para estado de erro
+                estado = "qerror";
+
+            }
+            p++;
         }
+        switch (estado) {
+            case "q1":
+                token = "erro";
+                return true;
+        }
+        //Retorna false caso nao case padrões
         return false;
     }
 }
