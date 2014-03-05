@@ -30,6 +30,7 @@ public class Lexer {
      * Função responsável por fazer a análise léxica do arquivo
      */
     public void parse() {
+        System.out.println(comentarioLinha("/* t */ tete"));
         int endereco = 0;
         String lexema = "";
         //boolean fechaLexema = false;
@@ -118,8 +119,6 @@ public class Lexer {
            return true;
         }
         if (numerico(lexema)) {
-            System.out.println(lexema);
-            System.out.println(token);
             return true;
         }
         //if (invalido(lexema)) {
