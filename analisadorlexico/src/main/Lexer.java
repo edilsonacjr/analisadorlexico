@@ -397,7 +397,7 @@ public class Lexer {
                 //token recebe POW retorna true
                 token = "POW";
                 return true;
-            default 
+            default :
                 //Retorna false por não ter casado nenhum padrão.
                 return false;
         }

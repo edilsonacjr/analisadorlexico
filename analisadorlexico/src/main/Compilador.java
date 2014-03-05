@@ -19,10 +19,7 @@ public class Compilador {
         System.out.println("Executando Analisador Léxico");
         
         Arquivo arq = new Arquivo("teste2.txt");
-        //arq.parseArquivo();
         Lexer lex = new Lexer(arq.parseArquivo());
         lex.parse();
-        //boolean i = "\n".equals("\n");
-        //System.out.println(i);
     }   
 }
