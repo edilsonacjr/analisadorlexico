@@ -71,16 +71,24 @@ public class Lexer {
                             t.setEndereco(endereco);
                             if (!testa(lexema)) {
                                 //System.out.println(lexema);
-                                t.setDefinicao(lexema.substring(0,lexema.length()-1));
+                                t.setDefinicao(lexema.substring(0, lexema.length() - 1));
 
-                                tabela.put(lexema.substring(0,lexema.length()-1), t);
-                                System.out.println("<" + token + "," + endereco + ">");
-                                endereco++;
-                                token = "";
-                                
-                                lexema = "";//+lexema.charAt(lexema.length()-1);
-                                //pos--;
-                                continue;
+                                if (!tabela.containsKey(t.getDefinicao())) {
+                                    tabela.put(lexema.substring(0, lexema.length() - 1), t);
+                                    System.out.println("<" + token + "," + endereco + ">");
+                                    endereco++;
+                                    token = "";
+
+                                    lexema = "";//+lexema.charAt(lexema.length()-1);
+                                    //pos--;
+                                    continue;
+                                } else {
+                                    TabelaSimbolo ts = tabela.get(t.getDefinicao());
+                                    System.out.println("<" + token + "," + ts.getEndereco() + ">");
+                                    lexema = "";
+                                    token = "";
+                                    continue;
+                                }
                             }
                             t.setDefinicao(lexema);
 
@@ -150,18 +158,22 @@ public class Lexer {
     public void dumpTabela() {
         Iterator<TabelaSimbolo> i = tabela.values().iterator();
         int t = tabela.size();
-        TabelaSimbolo[] tab = new TabelaSimbolo[100];
+        TabelaSimbolo[] tab = new TabelaSimbolo[t];
         TabelaSimbolo item;
 
-        for (int m = 0; m < t; m++) {
-            item = i.next();
-            System.out.println(item.getEndereco());
-            tab[item.getEndereco()] = item;
+        /*while (i.hasNext()) {
+            System.out.println(i.next());
         }
 
+        i = tabela.values().iterator();*/
         for (int m = 0; m < t; m++) {
-            System.out.println(tab[m].toString());
-        }
+         item = i.next();
+         tab[item.getEndereco()] = item;
+         }
+
+         for (int m = 0; m < t; m++) {
+         System.out.println(tab[m].toString());
+         }
     }
 
     //Insira as funções aqui.
