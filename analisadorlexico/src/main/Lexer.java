@@ -17,6 +17,7 @@ public class Lexer {
     private int pos;
     private String token;
     private boolean erro;
+    private String lexema;
 
     public Lexer(ArrayList<String> arquivo) {
         this.arquivo = arquivo;
@@ -32,7 +33,7 @@ public class Lexer {
     public void parse() {
         //System.out.println(comentarioLinha("/* t */ tete"));
         int endereco = 0;
-        String lexema = "";
+        lexema = "";
 
         //Percorre o ArrayList onde estão as linhas do arquivo.
         for (int i = 0; i < tam; i++) {
@@ -66,19 +67,35 @@ public class Lexer {
                         //Verifica se o estado é de erro
                         if (!"erro".equals(token)) {
                             TabelaSimbolo t = new TabelaSimbolo();
-                            t.setDefinicao(lexema);
                             t.setToken(token);
                             t.setEndereco(endereco);
+                            if (!testa(lexema)) {
+                                //System.out.println(lexema);
+                                t.setDefinicao(lexema.substring(0,lexema.length()-1));
+
+                                tabela.put(lexema.substring(0,lexema.length()-1), t);
+                                System.out.println("<" + token + "," + endereco + ">");
+                                endereco++;
+                                token = "";
+                                
+                                lexema = "";//+lexema.charAt(lexema.length()-1);
+                                //pos--;
+                                continue;
+                            }
+                            t.setDefinicao(lexema);
 
                             tabela.put(lexema, t);
                             System.out.println("<" + token + "," + endereco + ">");
                             endereco++;
+                            token = "";
                         } else {
                             System.out.println("INVALIDO (" + lexema + ") LINHA " + i);
+                            token = "";
                         }
                     } else {
                         TabelaSimbolo ts = tabela.get(lexema);
                         System.out.println("<" + token + "," + ts.getEndereco() + ">");
+                        token = "";
                     }
                     lexema = "";
                 }
@@ -133,11 +150,12 @@ public class Lexer {
     public void dumpTabela() {
         Iterator<TabelaSimbolo> i = tabela.values().iterator();
         int t = tabela.size();
-        TabelaSimbolo[] tab = new TabelaSimbolo[t];
-        TabelaSimbolo item = new TabelaSimbolo();
+        TabelaSimbolo[] tab = new TabelaSimbolo[100];
+        TabelaSimbolo item;
 
         for (int m = 0; m < t; m++) {
             item = i.next();
+            System.out.println(item.getEndereco());
             tab[item.getEndereco()] = item;
         }
 
@@ -304,8 +322,7 @@ public class Lexer {
         }
 
     }
-    
-    
+
     //Função que verifica os seguintes lexemas '+', '++','/','*','**'
     public Boolean operador(String palavra) {
 
@@ -374,7 +391,7 @@ public class Lexer {
             //Incrementa-se posição
             p++;
         }
-        
+
         //Atribuição dos tokens
         switch (estado) {
             case "q1":
@@ -397,7 +414,7 @@ public class Lexer {
                 //token recebe POW retorna true
                 token = "POW";
                 return true;
-            default :
+            default:
                 //Retorna false por não ter casado nenhum padrão.
                 return false;
         }
@@ -497,7 +514,6 @@ public class Lexer {
                             estado = "q5";
                     }
                     break;
-
             }
             p++;
         }
@@ -577,6 +593,10 @@ public class Lexer {
         char caracter = ' ';
         int t = lexema.length();
         int p = 0;
+
+        if (!token.equals("")) {
+            return false;
+        }
 
         while (p < t) {
             caracter = lexema.charAt(p);
