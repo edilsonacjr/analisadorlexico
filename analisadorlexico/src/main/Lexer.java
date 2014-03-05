@@ -60,46 +60,34 @@ public class Lexer {
                 erro = testa(lexema);
 
                 if (!erro) {
-                    //Evita a variável receber um número negativo
-                    //pos = (pos == 0) ? 0 : pos - 1;
+                    lexema = lexema.trim();
+                    //Verifica se o lexema já esta na tabela de simbolos
+                    if (!tabela.containsKey(lexema)) {
+                        //Verifica se o estado é de erro
+                        if (!"erro".equals(token)) {
+                            TabelaSimbolo t = new TabelaSimbolo();
+                            t.setDefinicao(lexema);
+                            t.setToken(token);
+                            t.setEndereco(endereco);
 
-                    if (erro) {
-                        erro = testa(lexema);
-                    } else {
-                        //coloca na tabela
-                        //if (lexema.charAt(lexema.length() - 1) == ' ') {
-                        //    pos++;
-                        //}
-                        //if (lexema.length() != 1) {
-                        //    lexema = lexema.substring(-1);
-                        //}
-                        lexema = lexema.trim();
-                        //Verifica se o lexema já esta na tabela de simbolos
-                        if (!tabela.containsKey(lexema)) {
-                            //Verifica se o estado é de erro
-                            if (!"erro".equals(token)) {
-                                TabelaSimbolo t = new TabelaSimbolo();
-                                t.setDefinicao(lexema);
-                                t.setToken(token);
-                                t.setEndereco(endereco);
-
-                                tabela.put(lexema, t);
-                                System.out.println("<" + token + "," + endereco + ">");
-                                endereco++;
-                            } else {
-                                System.out.println("INVALIDO (" + lexema + ") LINHA " + i);
-                            }
+                            tabela.put(lexema, t);
+                            System.out.println("<" + token + "," + endereco + ">");
+                            endereco++;
                         } else {
-                            TabelaSimbolo ts = tabela.get(lexema);
-                            System.out.println("<" + token + "," + ts.getEndereco() + ">");
+                            System.out.println("INVALIDO (" + lexema + ") LINHA " + i);
                         }
+                    } else {
+                        TabelaSimbolo ts = tabela.get(lexema);
+                        System.out.println("<" + token + "," + ts.getEndereco() + ">");
                     }
+
                     lexema = "";
                 }
                 pos++;
             }
-            if(lexema.length()>0)
+            if (lexema.length() > 0) {
                 lexema += "\n";
+            }
             pos = 0;
         }
 
@@ -127,14 +115,16 @@ public class Lexer {
             return true;
         }
         if (comentarioMultiplo(lexema)) {
-            return true;
+           return true;
         }
         if (numerico(lexema)) {
+            System.out.println(lexema);
+            System.out.println(token);
             return true;
         }
-        if (invalido(lexema)) {
-            return true;
-        }
+        //if (invalido(lexema)) {
+        //    return true;
+        //}
         return false;
     }
 
@@ -478,7 +468,7 @@ public class Lexer {
                             estado = "q2";
                             break;
                         case "q4":
-                            estado = "q5";    
+                            estado = "q5";
                     }
                     break;
 
