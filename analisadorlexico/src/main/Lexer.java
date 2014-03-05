@@ -45,7 +45,7 @@ public class Lexer {
             //Percorre cada caracter de uma determinada linha
             while (pos <= tamLinha) {
                 if (pos == tamLinha) {
-                    lexema += "\n";
+                    lexema += " ";
                 } else {
                     //Adiciona mais um caracter ao lexema
                     lexema += arquivo.get(i).charAt(pos);
@@ -124,7 +124,6 @@ public class Lexer {
             return true;
         }
         if (comentarioLinha(lexema)) {
-            System.out.println(lexema);
             return true;
         }
         if (comentarioMultiplo(lexema)) {
@@ -133,9 +132,9 @@ public class Lexer {
         if (numerico(lexema)) {
             return true;
         }
-        //if (invalido(lexema)) {
-         //   return true;
-        //}
+        if (invalido(lexema)) {
+            return true;
+        }
         return false;
     }
 
