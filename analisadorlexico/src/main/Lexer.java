@@ -477,6 +477,8 @@ public class Lexer {
                         case "q2":
                             estado = "q2";
                             break;
+                        case "q4":
+                            estado = "q5";    
                     }
                     break;
 
@@ -484,7 +486,7 @@ public class Lexer {
             p++;
         }
         //Se o estado é igual a q4 que é estado final para comentário multiplo
-        if (estado.equals("q0") || estado.equals("q1") || estado.equals("q4")) {
+        if (estado.equals("q0") || estado.equals("q1") || estado.equals("q5")) {
             //Token recebe COM e retorna se true
             token = "COM";
             return false;
