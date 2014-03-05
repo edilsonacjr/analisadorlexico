@@ -433,10 +433,10 @@ public class Lexer {
         if (estado == "q3") {
             //Token recebe COM retorna-se true
             token = "COM";
-            return true;
+            return false;
         } else {
             //Caso contrário retorna se false por não ter casado padrão.
-            return false;
+            return true;
         }
     }
 
@@ -487,10 +487,10 @@ public class Lexer {
         if (estado.equals("q4")) {
             //Token recebe COM e retorna se true
             token = "COM";
-            return true;
+            return false;
         } else {
             //Caso contrario retorna-se false por não ter casado padrão
-            return false;
+            return true;
         }
     }
 
