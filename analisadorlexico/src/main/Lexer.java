@@ -521,6 +521,9 @@ public class Lexer {
                         //Estando em q1 pois ja se encontrou um digito vai-se para q2 que é estado final para float
                         estado = "q2";
                         break;
+                    case "q2":
+                        estado = "qerror";
+                        break;        
                 }
             } else {
                 //Caso não seja digito ou ponto vai-se para estado de erro
