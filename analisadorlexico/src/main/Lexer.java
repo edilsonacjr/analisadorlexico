@@ -80,7 +80,6 @@ public class Lexer {
                         TabelaSimbolo ts = tabela.get(lexema);
                         System.out.println("<" + token + "," + ts.getEndereco() + ">");
                     }
-
                     lexema = "";
                 }
                 pos++;
@@ -534,7 +533,7 @@ public class Lexer {
                         break;
                     case "q2":
                         estado = "qerror";
-                        break;        
+                        break;
                 }
             } else {
                 //Caso não seja digito ou ponto vai-se para estado de erro
@@ -566,24 +565,18 @@ public class Lexer {
 
         while (p < t) {
             caracter = lexema.charAt(p);
-            //Se o caracter é um digito ou um ponto o que interessa para analise
 
-            if (Character.isDigit(caracter) || Character.isAlphabetic(caracter)) {
+            if (!Character.isSpace(caracter) && !lexema.contains(" ")) {
                 switch (estado) {
                     case "q0":
-                        //Estando em q0 vai-se para q1 
                         estado = "q1";
                         break;
                     case "q1":
-                        //Estando em q1 permance-se em q1 até que um ponto se encontrado
                         estado = "q1";
                         break;
                 }
-            } else if (true) {
             } else {
-                //Caso não seja digito ou ponto vai-se para estado de erro
                 estado = "qerror";
-
             }
             p++;
         }
