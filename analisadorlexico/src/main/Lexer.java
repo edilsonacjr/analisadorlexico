@@ -49,7 +49,7 @@ public class Lexer {
                 } else {
                     //Adiciona mais um caracter ao lexema
                     lexema += arquivo.get(i).charAt(pos);
-                    System.out.println(lexema);
+                    //System.out.println(lexema);
                 }
                 if (lexema.equals(" ") || lexema.equals("\b") || lexema.equals("\t")) {
                     pos++;
