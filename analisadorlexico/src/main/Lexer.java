@@ -409,6 +409,9 @@ public class Lexer {
                     break;
                 default:
                     switch (estado) {
+                        case "q1":
+                            estado = "qerror";
+                            break;
                         case "q2":
                             estado = "q2";
                             break;
@@ -419,7 +422,7 @@ public class Lexer {
             p++;
         }
         //Se o estado é o estado final q3
-        if (estado.equals("q0") || estado.equals("q1") || estado.equals("q3")) {
+        if (estado.equals("q0") || estado.equals("q1") || estado.equals("q3") || estado.equals("qerror")) {
             //Token recebe COM retorna-se true
             return false;
         } else {
