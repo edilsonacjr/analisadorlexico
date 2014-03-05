@@ -30,10 +30,9 @@ public class Lexer {
      * Função responsável por fazer a análise léxica do arquivo
      */
     public void parse() {
-        System.out.println(comentarioLinha("/* t */ tete"));
+        //System.out.println(comentarioLinha("/* t */ tete"));
         int endereco = 0;
         String lexema = "";
-        //boolean fechaLexema = false;
 
         //Percorre o ArrayList onde estão as linhas do arquivo.
         for (int i = 0; i < tam; i++) {
@@ -46,7 +45,7 @@ public class Lexer {
             //Percorre cada caracter de uma determinada linha
             while (pos <= tamLinha) {
                 if (pos == tamLinha) {
-                    lexema += " ";
+                    lexema += "\n";
                 } else {
                     //Adiciona mais um caracter ao lexema
                     lexema += arquivo.get(i).charAt(pos);
