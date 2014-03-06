@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/**
- *
- * @author Claudemir
- */
 public class Lexer {
 
     private int tam;
@@ -93,7 +89,7 @@ public class Lexer {
                             endereco++;
                             token = "";
                         } else {
-                            System.out.println("INVALIDO (" + lexema + ") LINHA " + i);
+                            System.out.println("INVALIDO (" + lexema + ") LINHA " + (i+1));
                             token = "";
                         }
                     } else {
@@ -111,7 +107,7 @@ public class Lexer {
             pos = 0;
         }
         if (!lexema.equals("")) {
-            System.out.println("INVALIDO (" + lexema.trim() + ") LINHA " + tam);
+            System.out.println("INVALIDO (" + lexema.trim() + ") LINHA " + (tam+1));
         }
         System.out.println("\nDump da Tabela de Simbolos");
         dumpTabela();
@@ -633,7 +629,7 @@ public class Lexer {
         while (p < t) {
             caracter = lexema.charAt(p);
 
-            if (!Character.isSpace(caracter) && !lexema.contains(" ")) {
+            if (!Character.isWhitespace(caracter) && !lexema.contains(" ")) {
                 switch (estado) {
                     case "q0":
                         estado = "q1";

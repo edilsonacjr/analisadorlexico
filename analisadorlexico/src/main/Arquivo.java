@@ -5,10 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * 
- * @author edilson
- */
 public class Arquivo {
     
     FileReader reader;
