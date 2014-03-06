@@ -31,7 +31,6 @@ public class Lexer {
      * Função responsável por fazer a análise léxica do arquivo
      */
     public void parse() {
-        //System.out.println(comentarioLinha("/* t */ tete"));
         int endereco = 0;
         lexema = "";
 
@@ -50,7 +49,6 @@ public class Lexer {
                 } else {
                     //Adiciona mais um caracter ao lexema
                     lexema += arquivo.get(i).charAt(pos);
-                    //System.out.println(lexema);
                 }
                 if (lexema.equals(" ") || lexema.equals("\b") || lexema.equals("\t")) {
                     pos++;
@@ -58,7 +56,7 @@ public class Lexer {
                     continue;
                 }
                 //Testa se o lexema ainda casa com algum padrão
-                erro = testa(lexema);
+                erro = lex(lexema);
 
                 if (!erro) {
                     lexema = lexema.trim();
@@ -69,8 +67,7 @@ public class Lexer {
                             TabelaSimbolo t = new TabelaSimbolo();
                             t.setToken(token);
                             t.setEndereco(endereco);
-                            if (!testa(lexema)) {
-                                //System.out.println(lexema);
+                            if (!lex(lexema)) {
                                 t.setDefinicao(lexema.substring(0, lexema.length() - 1));
 
                                 if (!tabela.containsKey(t.getDefinicao())) {
@@ -79,8 +76,7 @@ public class Lexer {
                                     endereco++;
                                     token = "";
 
-                                    lexema = "";//+lexema.charAt(lexema.length()-1);
-                                    //pos--;
+                                    lexema = "";
                                     continue;
                                 } else {
                                     TabelaSimbolo ts = tabela.get(t.getDefinicao());
@@ -124,10 +120,10 @@ public class Lexer {
     /**
      * Função responsável por verifcar se existe algum casamento de padrão
      *
-     * @param lexema: lexema a ser testado
+     * @param lexema: lexema a ser lexdo
      * @return true casar, e falso caso contrário
      */
-    public boolean testa(String lexema) {
+    public boolean lex(String lexema) {
         if (comparacao(lexema)) {
             return true;
         }
@@ -161,23 +157,22 @@ public class Lexer {
         TabelaSimbolo[] tab = new TabelaSimbolo[t];
         TabelaSimbolo item;
 
-        /*while (i.hasNext()) {
-            System.out.println(i.next());
+        for (int m = 0; m < t; m++) {
+            item = i.next();
+            tab[item.getEndereco()] = item;
         }
 
-        i = tabela.values().iterator();*/
         for (int m = 0; m < t; m++) {
-         item = i.next();
-         tab[item.getEndereco()] = item;
-         }
-
-         for (int m = 0; m < t; m++) {
-         System.out.println(tab[m].toString());
-         }
+            System.out.println(tab[m].toString());
+        }
     }
 
-    //Insira as funções aqui.
-    //Função que verifica os seguintes lexemas: ">","<",">=" e "<="
+
+    /**
+     * Função que verifica os seguintes lexemas: ">","<",">=" e "<="
+     * @param lexema
+     * @return 
+     */
     public boolean comparacao(String lexema) {
         //Estado atual. O estado q0 é o estado inicial
         String estado = "q0";
@@ -272,7 +267,11 @@ public class Lexer {
 
     }
 
-    //Verifica os seguintes lexemas: "=" e "=="
+    /**
+     * Verifica os seguintes lexemas: "=" e "=="
+     * @param lexema
+     * @return 
+     */
     public boolean operadorIgual(String lexema) {
         //Estado atual. O estado q0 é o estado inicial
         String estado = "q0";
@@ -335,7 +334,11 @@ public class Lexer {
 
     }
 
-    //Função que verifica os seguintes lexemas '+', '++','/','*','**'
+    /**
+     * Função que verifica os seguintes lexemas '+', '++','/','*','**'
+     * @param palavra
+     * @return 
+     */
     public Boolean operador(String palavra) {
 
         String estado = "q0";
@@ -431,7 +434,11 @@ public class Lexer {
                 return false;
         }
     }
-
+    /**
+     * Função que verifica se o lexema é um comentário de única linha
+     * @param palavra
+     * @return 
+     */
     public Boolean comentarioLinha(String palavra) {
 
         String estado = "q0";
@@ -484,7 +491,11 @@ public class Lexer {
             return true;
         }
     }
-
+    /**
+     * Função que verifica se o lexema é um comentário de múltiplas linhas
+     * @param palavra
+     * @return 
+     */
     public Boolean comentarioMultiplo(String palavra) {
 
         String estado = "q0";
@@ -540,7 +551,11 @@ public class Lexer {
         }
     }
 
-    //Comentário numerico verifica também se é float
+    /**
+     * Função que verifica se o lexema é numérico
+     * @param palavra
+     * @return 
+     */
     public Boolean numerico(String palavra) {
 
         String estado = "q0";
@@ -598,7 +613,12 @@ public class Lexer {
         //Retorna false caso nao case padrões
         return false;
     }
-
+    
+    /**
+     * Função que verifica se o lexema é inválido
+     * @param lexema
+     * @return 
+     */
     public Boolean invalido(String lexema) {
 
         String estado = "q0";
@@ -606,7 +626,7 @@ public class Lexer {
         int t = lexema.length();
         int p = 0;
 
-        if (!token.equals("")) {
+        if (!token.equals("") && !token.equals("erro")) {
             return false;
         }
 

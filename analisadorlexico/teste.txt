@@ -1,2 +1,6 @@
-2+4 //teste de comentario
-2**1
+teste
+
+
+
+
+2+2

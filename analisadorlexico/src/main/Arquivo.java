@@ -32,7 +32,7 @@ public class Arquivo {
         String linha;
         ArrayList<String> matriz = new ArrayList<String>();
         while ((linha = leitor.readLine()) != null) {
-            matriz.add(linha);
+            matriz.add(linha.trim());
         }
         reader.close();
         leitor.close();
