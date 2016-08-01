@@ -1,4 +1,4 @@
-Analisador Léxico
+Lexical analyzer
 ================
 
-Implementação de um analisador léxico minimalista em Java, como trabalho prático da matéria de Compiladores.
+Implementation of a minimalist lexical analyzer in Java as practical  assignment for the Compilers course.
